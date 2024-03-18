@@ -1,11 +1,45 @@
 import java.sql.Connection
 import java.sql.DriverManager
+import java.sql.ResultSet
+import java.sql.Statement
 
 class YGO {
 
     static void main(String[] args) {
-        System.out.println starting()
-        draw()
+
+        /**
+         *tryconnecttodb(sqlite)
+         *-DriverManager
+         */
+        String databaseUrl = "jdbc:sqlite:mydatabase.db"
+        Connection connection = DriverManager.getConnection(databaseUrl)
+
+        assert connection!= null
+        println "Connection to my database exists, powered by Driver Manager \n"
+
+        /**
+         * todo : Create Table and Insert 1st roll
+         *
+         *      use Statement to do JDBCoperation
+         *      using file to write sql
+         */
+        String script = new File('init.sql').text
+        Statement statement = connection.createStatement();
+        statement.executeUpdate(script)
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM monsterCard")
+
+        while (resultSet.next()){
+            println"${resultSet.getString('name')},${resultSet.getInt('rank')},"+
+                    "${resultSet.getString('effect')}" +
+                    "${resultSet.getInt('attackForce')},${resultSet.getInt('defendForce')}"
+        }
+
+
+        /**
+         * transfer to use db
+         */
+//        System.out.println starting()
+//        draw()
     }
 
     String readHandCards() {
