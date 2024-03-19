@@ -8,13 +8,13 @@ class YGO {
     static void main(String[] args) {
 
         /**
-         *tryconnecttodb(sqlite)
-         *-DriverManager
+         * tryconnecttodb(sqlite)
+         * -DriverManager
          */
         String databaseUrl = "jdbc:sqlite:mydatabase.db"
         Connection connection = DriverManager.getConnection(databaseUrl)
 
-        assert connection!= null
+        assert connection != null
         println "Connection to my database exists, powered by Driver Manager \n"
 
         /**
@@ -23,15 +23,32 @@ class YGO {
          *      use Statement to do JDBCoperation
          *      using file to write sql
          */
-        String script = new File('init.sql').text
-        Statement statement = connection.createStatement();
-        statement.executeUpdate(script)
+        Statement statement = connection.createStatement()
+        //Create
+        def name = "Kuriboh"
+        def rank = 1
+        def effect = "Don''t cause battle damage."
+        def attackForce = 0
+        def defendForce = 0
+//        statement.executeUpdate("INSERT INTO monsterCard(name,rank,effect,attackForce,defendForce)VALUES('${name}',${rank},'${effect}',${attackForce},${defendForce})")
+
+
+        //Update
+        def newRank = 2
+        def newName = "Kuribo"
+//        statement.executeUpdate("UPDATE monsterCard   SET name='Kuriboh'    WHERE name='Kuribo' ")
+
+        //Delete
+        //statement.executeUpdate("DELETE FROM monsterCard WHERE(name='Kuriboh')")
+
+        //Read Table-monsterCard
         ResultSet resultSet = statement.executeQuery("SELECT * FROM monsterCard")
 
-        while (resultSet.next()){
-            println"${resultSet.getString('name')},${resultSet.getInt('rank')},"+
-                    "${resultSet.getString('effect')}" +
-                    "${resultSet.getInt('attackForce')},${resultSet.getInt('defendForce')}"
+        //print read-result
+        while (resultSet.next()) {
+            println "${resultSet.getString('name')},${resultSet.getInt('rank')}\n" +
+                    "${resultSet.getString('effect')}\n" +
+                    "${resultSet.getInt('attackForce')},${resultSet.getInt('defendForce')}\n"
         }
 
 
