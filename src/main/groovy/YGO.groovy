@@ -1,56 +1,19 @@
-import java.sql.Connection
-import java.sql.DriverManager
-import java.sql.ResultSet
-import java.sql.Statement
+import dao.CrudService
 
 class YGO {
 
     static void main(String[] args) {
 
-        /**
-         * tryconnecttodb(sqlite)
-         * -DriverManager
-         */
-        String databaseUrl = "jdbc:sqlite:mydatabase.db"
-        Connection connection = DriverManager.getConnection(databaseUrl)
-
-        assert connection != null
+        CrudService crudService = new CrudService("jdbc:sqlite:mydatabase.db")
+        //check if create & connected successfully
+        assert crudService.connection != null
         println "Connection to my database exists, powered by Driver Manager \n"
 
-        /**
-         * todo : Create Table and Insert 1st roll
-         *
-         *      use Statement to do JDBCoperation
-         *      using file to write sql
-         */
-        Statement statement = connection.createStatement()
-        //Create
-        def name = "Kuriboh"
-        def rank = 1
-        def effect = "Don''t cause battle damage."
-        def attackForce = 0
-        def defendForce = 0
-//        statement.executeUpdate("INSERT INTO monsterCard(name,rank,effect,attackForce,defendForce)VALUES('${name}',${rank},'${effect}',${attackForce},${defendForce})")
-
-
-        //Update
-        def newRank = 2
-        def newName = "Kuribo"
-//        statement.executeUpdate("UPDATE monsterCard   SET name='Kuriboh'    WHERE name='Kuribo' ")
-
-        //Delete
-        //statement.executeUpdate("DELETE FROM monsterCard WHERE(name='Kuriboh')")
-
-        //Read Table-monsterCard
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM monsterCard")
-
-        //print read-result
-        while (resultSet.next()) {
-            println "${resultSet.getString('name')},${resultSet.getInt('rank')}\n" +
-                    "${resultSet.getString('effect')}\n" +
-                    "${resultSet.getInt('attackForce')},${resultSet.getInt('defendForce')}\n"
-        }
-
+        //crud example
+//        crudService.createRecored("Increasing C",10,"Only when special summoned over 5times,summon it on your field",0,0)
+//        crudService.updateRecoredName("Increasing Cockroach","Increase C")
+//        crudService.deleteRecord("Increasing C")
+        println crudService.readRecord()
 
         /**
          * transfer to use db
